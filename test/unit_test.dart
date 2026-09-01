@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spidey_tracker/core/services/theme_storage_service.dart';
 import 'package:spidey_tracker/core/theme/cubit/theme_cubit.dart';
 import 'package:spidey_tracker/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:spidey_tracker/features/splash/presentation/cubit/splash_state.dart';
@@ -8,9 +10,13 @@ import 'package:spidey_tracker/features/tracker/presentation/cubit/tracker_cubit
 import 'package:spidey_tracker/features/tracker/presentation/cubit/tracker_state.dart';
 
 void main() {
-  group('ThemeCubit Tests', () {
-    test('Initial theme is light and toggling switches to dark', () {
-      final cubit = ThemeCubit();
+  group('ThemeStorageService & ThemeCubit Tests', () {
+    test('Initial theme is light and toggling switches to dark and persists', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final storage = ThemeStorageServiceImpl(prefs);
+
+      final cubit = ThemeCubit(storageService: storage);
       expect(cubit.state.themeMode, equals(ThemeMode.light));
       expect(cubit.state.isDarkMode, isFalse);
 
@@ -18,8 +24,13 @@ void main() {
       expect(cubit.state.themeMode, equals(ThemeMode.dark));
       expect(cubit.state.isDarkMode, isTrue);
 
+      final savedMode = await storage.getSavedThemeMode();
+      expect(savedMode, equals(ThemeMode.dark));
+
       cubit.toggleTheme();
       expect(cubit.state.themeMode, equals(ThemeMode.light));
+      final savedMode2 = await storage.getSavedThemeMode();
+      expect(savedMode2, equals(ThemeMode.light));
     });
   });
 

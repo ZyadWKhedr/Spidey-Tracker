@@ -45,56 +45,65 @@ class SplashView extends StatelessWidget {
               : AppStrings.splashCalibrating;
 
           return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppDimensions.p24,
-                vertical: AppDimensions.p32,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // App Title Header
-                  Column(
-                    children: [
-                      Text(
-                        AppStrings.appName.toUpperCase(),
-                        style: AppTextStyles.headlineLarge(context).copyWith(
-                          color: AppColors.pixelBlack,
-                          fontWeight: FontWeight.w900,
+            child: SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimensions.p24,
+                  vertical: AppDimensions.p32,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // App Title Header
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppStrings.appName.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.headlineLarge(context).copyWith(
+                            color: AppColors.pixelBlack,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: AppDimensions.p4),
-                      Text(
-                        AppStrings.appTagline,
-                        style: AppTextStyles.pixelBadge.copyWith(
-                          fontSize: 16,
-                          color: AppColors.pixelBlack.withValues(alpha: 0.8),
+                        const SizedBox(height: AppDimensions.p4),
+                        Text(
+                          AppStrings.appTagline,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.pixelBadge.copyWith(
+                            fontSize: 16,
+                            color: AppColors.pixelBlack.withValues(alpha: 0.8),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
 
-                  // Center Pixel Spidey Logo
-                  const SplashLogoWidget(),
+                    // Center Pixel Spidey Logo
+                    const SplashLogoWidget(),
 
-                  // Bottom Telemetry & Progress
-                  Column(
-                    children: [
-                      SplashStatusText(statusMessage: status),
-                      const SizedBox(height: AppDimensions.p12),
-                      SplashProgressBar(progress: progress),
-                      const SizedBox(height: AppDimensions.p8),
-                      Text(
-                        'v1.0 • QUEENS SECTOR NETWORK',
-                        style: AppTextStyles.telemetry(AppColors.pixelBlack)
-                            .copyWith(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
+                    // Bottom Telemetry & Progress
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SplashStatusText(statusMessage: status),
+                        const SizedBox(height: AppDimensions.p12),
+                        SplashProgressBar(progress: progress),
+                        const SizedBox(height: AppDimensions.p8),
+                        Text(
+                          'v1.0 • QUEENS SECTOR NETWORK',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.telemetry(AppColors.pixelBlack)
+                              .copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );

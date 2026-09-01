@@ -1,10 +1,17 @@
 import 'dart:async';
 import 'dart:developer' as developer;
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app/app_bloc_observer.dart';
+import 'core/services/theme_storage_service.dart';
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap(
+  FutureOr<Widget> Function(
+    ThemeStorageService themeStorageService,
+    ThemeMode initialThemeMode,
+  ) builder,
+) async {
   FlutterError.onError = (details) {
     developer.log(
       details.exceptionAsString(),
@@ -17,5 +24,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(await builder());
+  final prefs = await SharedPreferences.getInstance();
+  final themeStorageService = ThemeStorageServiceImpl(prefs);
+  final initialThemeMode = await themeStorageService.getSavedThemeMode();
+
+  runApp(await builder(themeStorageService, initialThemeMode));
 }
