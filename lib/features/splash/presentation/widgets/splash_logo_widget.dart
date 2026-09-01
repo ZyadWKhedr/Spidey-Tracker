@@ -11,13 +11,12 @@ class SplashLogoWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Spidey Pixel Badge
+        // Spidey App Icon Badge
         Container(
-          width: AppDimensions.logoSizeLarge,
-          height: AppDimensions.logoSizeLarge,
+          width: AppDimensions.logoSizeLarge + 16,
+          height: AppDimensions.logoSizeLarge + 16,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.badgeCream,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusXl + 8),
             border: Border.all(
               color: AppColors.pixelBlack,
               width: 3.5,
@@ -29,17 +28,18 @@ class SplashLogoWidget extends StatelessWidget {
                 blurRadius: 0,
               ),
               BoxShadow(
-                color: AppColors.primarySkyBlue.withValues(alpha: 0.4),
+                color: AppColors.primarySkyBlueDark.withValues(alpha: 0.4),
                 offset: const Offset(-2, -2),
                 blurRadius: 16,
               ),
             ],
           ),
-          child: ClipOval(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusXl + 4),
             child: Image.asset(
-              AppAssets.spideyIcon,
-              fit: BoxFit.contain,
-              filterQuality: FilterQuality.none, // Preserve crisp pixel-art look
+              AppAssets.spideyAppIcon,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.none, // Preserve crisp pixel art
             ),
           ),
         ),
