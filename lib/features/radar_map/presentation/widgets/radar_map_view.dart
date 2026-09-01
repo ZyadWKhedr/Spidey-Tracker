@@ -5,6 +5,8 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/cubit/theme_cubit.dart';
+import '../../../../core/theme/cubit/theme_state.dart';
 import '../../../../core/theme/spidey_map_styles.dart';
 import '../../domain/entities/spidey_sighting.dart';
 import '../cubit/radar_map_cubit.dart';
@@ -34,81 +36,92 @@ class _RadarMapViewState extends State<RadarMapView> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, themeState) {
+        final isDark = themeState.isDarkMode;
 
-    return BlocBuilder<RadarMapCubit, RadarMapState>(
-      builder: (context, state) {
-        final cubit = context.read<RadarMapCubit>();
+        return BlocBuilder<RadarMapCubit, RadarMapState>(
+          builder: (context, state) {
+            final cubit = context.read<RadarMapCubit>();
 
-        // Build individual Spidey Markers
-        final markers = state.sightings.map((sighting) {
-          return Marker(
-            point: sighting.coordinates,
-            width: 48,
-            height: 48,
-            child: GestureDetector(
-              onTap: () => cubit.selectSighting(sighting),
-              child: _SpideyMapMarkerWidget(sighting: sighting),
-            ),
-          );
-        }).toList();
-
-        return Container(
-          color: isDark ? AppColors.darkBackground : AppColors.lightBackground,
-          child: FlutterMap(
-            mapController: _mapController,
-            options: MapOptions(
-              initialCenter: const LatLng(40.7350, -73.9400), // Queens / NYC Core
-              initialZoom: 12.8,
-              minZoom: 2.0,
-              maxZoom: 18.5,
-              onMapReady: () {
-                cubit.setMapController(_mapController);
-              },
-              onTap: (_, _) {
-                cubit.clearSelectedSighting();
-              },
-            ),
-            children: [
-              // OpenFreeMap High-Resolution Vector Raster Tiles (Native Dark or Positron Light)
-              TileLayer(
-                urlTemplate: isDark
-                    ? SpideyMapTileProviders.openFreeMapDarkUrl
-                    : SpideyMapTileProviders.openFreeMapLightUrl,
-                userAgentPackageName: 'com.example.spidey_tracker',
-                maxZoom: 19,
-                fallbackUrl: SpideyMapTileProviders.openStreetMapUrl,
-              ),
-
-              // Tactical Radar Grid Overlay
-              const _TacticalRadarGridOverlay(),
-
-              // User GPS Location Pulse Marker Layer
-              if (state.userLocation != null)
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      point: state.userLocation!,
-                      width: 32,
-                      height: 32,
-                      child: _UserGpsMarkerWidget(),
-                    ),
-                  ],
+            // Build individual Spidey Markers
+            final markers = state.sightings.map((sighting) {
+              return Marker(
+                point: sighting.coordinates,
+                width: 48,
+                height: 48,
+                child: GestureDetector(
+                  onTap: () => cubit.selectSighting(sighting),
+                  child: _SpideyMapMarkerWidget(sighting: sighting),
                 ),
+              );
+            }).toList();
 
-              // Animated Marker Clustering Layer for Hundreds of Sightings
-              MarkerClusterLayerWidget(
-                options: MarkerClusterLayerOptions(
-                  maxClusterRadius: 50,
-                  size: const Size(54, 54),
-                  markers: markers,
-                  builder: (context, clusterMarkers) {
-                    return _ClusterMarkerWidget(count: clusterMarkers.length);
+            return Container(
+              color: isDark ? AppColors.darkBackground : AppColors.lightBackground,
+              child: FlutterMap(
+                mapController: _mapController,
+                options: MapOptions(
+                  initialCenter: const LatLng(40.7350, -73.9400), // Queens / NYC Core
+                  initialZoom: 12.8,
+                  minZoom: 2.0,
+                  maxZoom: 18.5,
+                  onMapReady: () {
+                    cubit.setMapController(_mapController);
+                  },
+                  onTap: (_, _) {
+                    cubit.clearSelectedSighting();
                   },
                 ),
+                children: [
+                  // OpenStreetMap Tile Layer with dynamic Theme-Aware Filter
+                  TileLayer(
+                    urlTemplate: SpideyMapTileProviders.openStreetMapUrl,
+                    userAgentPackageName: 'com.example.spidey_tracker',
+                    maxZoom: 19,
+                    tileBuilder: (context, tileWidget, tile) {
+                      if (!isDark) {
+                        return tileWidget;
+                      }
+                      // Dark Spider-Man Night Radar Color Filter
+                      return ColorFiltered(
+                        colorFilter: SpideyMapTileProviders.darkSpideyRadarFilter,
+                        child: tileWidget,
+                      );
+                    },
+                  ),
+
+                  // Tactical Vignette Overlay in Dark Mode
+                  if (isDark) const _TacticalRadarGridOverlay(),
+
+                  // User GPS Location Pulse Marker Layer
+                  if (state.userLocation != null)
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          point: state.userLocation!,
+                          width: 32,
+                          height: 32,
+                          child: _UserGpsMarkerWidget(),
+                        ),
+                      ],
+                    ),
+
+                  // Animated Marker Clustering Layer for Hundreds of Sightings
+                  MarkerClusterLayerWidget(
+                    options: MarkerClusterLayerOptions(
+                      maxClusterRadius: 50,
+                      size: const Size(54, 54),
+                      markers: markers,
+                      builder: (context, clusterMarkers) {
+                        return _ClusterMarkerWidget(count: clusterMarkers.length);
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
@@ -128,8 +141,8 @@ class _TacticalRadarGridOverlay extends StatelessWidget {
             radius: 1.2,
             colors: [
               Colors.transparent,
-              AppColors.primarySkyBlue.withValues(alpha: 0.05),
-              AppColors.darkBackground.withValues(alpha: 0.25),
+              AppColors.primarySkyBlue.withValues(alpha: 0.04),
+              AppColors.darkBackground.withValues(alpha: 0.35),
             ],
           ),
         ),

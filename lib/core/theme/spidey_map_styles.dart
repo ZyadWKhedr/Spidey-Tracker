@@ -1,13 +1,16 @@
+import 'dart:ui';
+
 abstract final class SpideyMapTileProviders {
-  // 1. OpenFreeMap Dark / Positron (No API Key Required, Fast, High Quality)
-  static const String openFreeMapDarkUrl =
-      'https://tiles.openfreemap.org/styles/dark/{z}/{x}/{y}.png';
-
-  // 2. OpenFreeMap Positron / Light Style
-  static const String openFreeMapLightUrl =
-      'https://tiles.openfreemap.org/styles/positron/{z}/{x}/{y}.png';
-
-  // 3. Fallback OpenStreetMap Standard
+  // Official Public OpenStreetMap Tile Server
   static const String openStreetMapUrl =
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+  // Dark Matrix Color Filter tailored to Spidey Tracker Dark Night HUD
+  // Translates light OSM tiles into dark slate blue & glowing cyan/red roads
+  static const ColorFilter darkSpideyRadarFilter = ColorFilter.matrix(<double>[
+    -0.80, 0, 0, 0, 240, // Red Channel Inversion & Night Tint
+    0, -0.80, 0, 0, 245, // Green Channel
+    0, 0, -0.75, 0, 255, // Blue Channel (Deep Sky Blue Glow)
+    0, 0, 0, 1.0, 0,     // Alpha
+  ]);
 }
