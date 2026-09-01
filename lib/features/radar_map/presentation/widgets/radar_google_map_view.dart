@@ -10,8 +10,27 @@ import '../../domain/entities/spidey_sighting.dart';
 import '../cubit/radar_map_cubit.dart';
 import '../cubit/radar_map_state.dart';
 
-class RadarGoogleMapView extends StatelessWidget {
+class RadarGoogleMapView extends StatefulWidget {
   const RadarGoogleMapView({super.key});
+
+  @override
+  State<RadarGoogleMapView> createState() => _RadarGoogleMapViewState();
+}
+
+class _RadarGoogleMapViewState extends State<RadarGoogleMapView> {
+  late final MapController _mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapController = MapController();
+  }
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +52,14 @@ class RadarGoogleMapView extends StatelessWidget {
         }).toList();
 
         return FlutterMap(
+          mapController: _mapController,
           options: MapOptions(
             initialCenter: const LatLng(40.7350, -73.9400), // Queens / NYC Core
             initialZoom: 12.8,
             minZoom: 2.0,
             maxZoom: 18.5,
             onMapReady: () {
-              if (cubit.mapController != null) {
-                cubit.setMapController(cubit.mapController!);
-              }
+              cubit.setMapController(_mapController);
             },
             onTap: (_, _) {
               cubit.clearSelectedSighting();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../data/repositories/radar_map_repository_impl.dart';
 import '../cubit/radar_map_cubit.dart';
@@ -15,13 +14,10 @@ class RadarMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mapController = MapController();
     return BlocProvider(
       create: (context) => RadarMapCubit(
         repository: RadarMapRepositoryImpl(),
-      )
-        ..setMapController(mapController)
-        ..loadInitialData(),
+      )..loadInitialData(),
       child: const RadarMapView(),
     );
   }
@@ -46,7 +42,7 @@ class RadarMapView extends StatelessWidget {
             child: RadarMapHeader(),
           ),
 
-          // 3. Cinematic Camera Controls (Street -> District -> Country -> World)
+          // 3. Camera Level Controls (Street -> District -> Country -> World)
           Positioned(
             top: 80,
             right: AppDimensions.p16,

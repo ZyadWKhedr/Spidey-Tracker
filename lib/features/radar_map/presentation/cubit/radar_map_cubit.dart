@@ -9,12 +9,22 @@ import 'radar_map_state.dart';
 
 class RadarMapCubit extends Cubit<RadarMapState> {
   final RadarMapRepository repository;
-  MapController? mapController;
+  MapController? _mapController;
 
   RadarMapCubit({required this.repository}) : super(const RadarMapState());
 
   void setMapController(MapController controller) {
-    mapController = controller;
+    _mapController = controller;
+    // Automatically trigger dramatic Spider-Sense dive on initial map ready
+    performDramaticSpiderSenseZoom();
+  }
+
+  void moveMap(LatLng center, double zoom) {
+    try {
+      _mapController?.move(center, zoom);
+    } catch (_) {
+      // Ignored if map controller is not yet mounted
+    }
   }
 
   Future<void> loadInitialData() async {
@@ -35,7 +45,7 @@ class RadarMapCubit extends Cubit<RadarMapState> {
 
   void selectSighting(SpideySighting sighting) {
     emit(state.copyWith(selectedSighting: sighting));
-    mapController?.move(sighting.coordinates, 16.0);
+    moveMap(sighting.coordinates, 16.0);
   }
 
   void clearSelectedSighting() {
@@ -87,7 +97,7 @@ class RadarMapCubit extends Cubit<RadarMapState> {
         isLoadingLocation: false,
       ));
 
-      mapController?.move(userLatLng, 16.0);
+      moveMap(userLatLng, 16.0);
     } catch (e) {
       emit(state.copyWith(
         isLoadingLocation: false,
@@ -98,8 +108,6 @@ class RadarMapCubit extends Cubit<RadarMapState> {
 
   void animateToLevel(CameraLevel level) {
     emit(state.copyWith(cameraLevel: level));
-    final controller = mapController;
-    if (controller == null) return;
 
     LatLng target;
     double zoom;
@@ -118,30 +126,29 @@ class RadarMapCubit extends Cubit<RadarMapState> {
         zoom = 2.5;
     }
 
-    controller.move(target, zoom);
+    moveMap(target, zoom);
   }
 
-  /// Dramatic Spider-Sense multi-stage cinematic zoom
+  /// Automatic dramatic Spider-Sense multi-stage cinematic zoom
   Future<void> performDramaticSpiderSenseZoom() async {
-    final controller = mapController;
-    if (controller == null) return;
+    if (_mapController == null) return;
 
     emit(state.copyWith(isScanning: true));
 
-    // Step 1: Fly to Global Orbit
-    controller.move(const LatLng(25.0, -40.0), 2.5);
-    await Future.delayed(const Duration(milliseconds: 700));
-
-    // Step 2: Swoop to Country
-    controller.move(const LatLng(40.0, -75.0), 6.5);
-    await Future.delayed(const Duration(milliseconds: 700));
-
-    // Step 3: Dive to NYC / Queens District
-    controller.move(const LatLng(40.7484, -73.9857), 13.5);
+    // Step 1: Start at Global Orbit
+    moveMap(const LatLng(25.0, -40.0), 2.5);
     await Future.delayed(const Duration(milliseconds: 600));
 
-    // Step 4: Slam into Street Level
-    controller.move(const LatLng(40.7580, -73.9855), 17.2);
+    // Step 2: Swoop to Country
+    moveMap(const LatLng(40.0, -75.0), 6.5);
+    await Future.delayed(const Duration(milliseconds: 600));
+
+    // Step 3: Dive to NYC / Queens District
+    moveMap(const LatLng(40.7484, -73.9857), 13.5);
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // Step 4: Arrive at Street Level
+    moveMap(const LatLng(40.7580, -73.9855), 16.8);
 
     emit(state.copyWith(
       isScanning: false,

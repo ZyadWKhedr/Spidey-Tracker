@@ -14,124 +14,56 @@ class CinematicCameraControls extends StatelessWidget {
     return BlocBuilder<RadarMapCubit, RadarMapState>(
       builder: (context, state) {
         final cubit = context.read<RadarMapCubit>();
-        final isScanning = state.isScanning;
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            // Dramatic Spider-Sense Zoom Button
-            Container(
-              margin: const EdgeInsets.only(bottom: AppDimensions.p12),
-              decoration: BoxDecoration(
-                color: AppColors.spideyRed,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
-                border: Border.all(
-                  color: AppColors.pixelBlack,
-                  width: 2,
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.pixelBlack,
-                    offset: Offset(2, 3),
-                    blurRadius: 0,
-                  ),
-                ],
-              ),
-              child: InkWell(
-                onTap: isScanning
-                    ? null
-                    : () => cubit.performDramaticSpiderSenseZoom(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.p12,
-                    vertical: AppDimensions.p8,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      isScanning
-                          ? const SizedBox(
-                              width: 14,
-                              height: 14,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation(
-                                  AppColors.webWhite,
-                                ),
-                              ),
-                            )
-                          : const Icon(
-                              Icons.auto_awesome,
-                              color: AppColors.webWhite,
-                              size: 16,
-                            ),
-                      const SizedBox(width: AppDimensions.p8),
-                      Text(
-                        'CINEMATIC DIVE',
-                        style: AppTextStyles.telemetry(AppColors.webWhite).copyWith(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+        return Container(
+          padding: const EdgeInsets.all(AppDimensions.p4),
+          decoration: BoxDecoration(
+            color: AppColors.darkSurface,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
+            border: Border.all(
+              color: AppColors.pixelBlack,
+              width: 2,
             ),
-
-            // Tiered Camera Level Selector (Street, District, Country, World)
-            Container(
-              padding: const EdgeInsets.all(AppDimensions.p4),
-              decoration: BoxDecoration(
-                color: AppColors.darkSurface,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
-                border: Border.all(
-                  color: AppColors.pixelBlack,
-                  width: 2,
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.pixelBlack,
-                    offset: Offset(2, 3),
-                    blurRadius: 0,
-                  ),
-                ],
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.pixelBlack,
+                offset: Offset(2, 3),
+                blurRadius: 0,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _CameraLevelButton(
-                    label: 'STREET',
-                    icon: Icons.streetview,
-                    isSelected: state.cameraLevel == CameraLevel.street,
-                    onTap: () => cubit.animateToLevel(CameraLevel.street),
-                  ),
-                  const SizedBox(height: 2),
-                  _CameraLevelButton(
-                    label: 'DISTRICT',
-                    icon: Icons.location_city,
-                    isSelected: state.cameraLevel == CameraLevel.district,
-                    onTap: () => cubit.animateToLevel(CameraLevel.district),
-                  ),
-                  const SizedBox(height: 2),
-                  _CameraLevelButton(
-                    label: 'COUNTRY',
-                    icon: Icons.map,
-                    isSelected: state.cameraLevel == CameraLevel.country,
-                    onTap: () => cubit.animateToLevel(CameraLevel.country),
-                  ),
-                  const SizedBox(height: 2),
-                  _CameraLevelButton(
-                    label: 'WORLD',
-                    icon: Icons.public,
-                    isSelected: state.cameraLevel == CameraLevel.world,
-                    onTap: () => cubit.animateToLevel(CameraLevel.world),
-                  ),
-                ],
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _CameraLevelButton(
+                label: 'STREET',
+                icon: Icons.streetview,
+                isSelected: state.cameraLevel == CameraLevel.street,
+                onTap: () => cubit.animateToLevel(CameraLevel.street),
               ),
-            ),
-          ],
+              const SizedBox(height: 2),
+              _CameraLevelButton(
+                label: 'DISTRICT',
+                icon: Icons.location_city,
+                isSelected: state.cameraLevel == CameraLevel.district,
+                onTap: () => cubit.animateToLevel(CameraLevel.district),
+              ),
+              const SizedBox(height: 2),
+              _CameraLevelButton(
+                label: 'COUNTRY',
+                icon: Icons.map,
+                isSelected: state.cameraLevel == CameraLevel.country,
+                onTap: () => cubit.animateToLevel(CameraLevel.country),
+              ),
+              const SizedBox(height: 2),
+              _CameraLevelButton(
+                label: 'WORLD',
+                icon: Icons.public,
+                isSelected: state.cameraLevel == CameraLevel.world,
+                onTap: () => cubit.animateToLevel(CameraLevel.world),
+              ),
+            ],
+          ),
         );
       },
     );
