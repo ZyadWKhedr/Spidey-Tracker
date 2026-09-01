@@ -34,6 +34,8 @@ class _RadarGoogleMapViewState extends State<RadarGoogleMapView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocBuilder<RadarMapCubit, RadarMapState>(
       builder: (context, state) {
         final cubit = context.read<RadarMapCubit>();
@@ -51,52 +53,72 @@ class _RadarGoogleMapViewState extends State<RadarGoogleMapView> {
           );
         }).toList();
 
-        return FlutterMap(
-          mapController: _mapController,
-          options: MapOptions(
-            initialCenter: const LatLng(40.7350, -73.9400), // Queens / NYC Core
-            initialZoom: 12.8,
-            minZoom: 2.0,
-            maxZoom: 18.5,
-            onMapReady: () {
-              cubit.setMapController(_mapController);
-            },
-            onTap: (_, _) {
-              cubit.clearSelectedSighting();
-            },
-          ),
+        return Stack(
           children: [
-            // Dark Matter Retro Spider-Man OpenStreetMap Tile Layer
-            TileLayer(
-              urlTemplate: SpideyMapTileProviders.darkMatterUrl,
-              subdomains: SpideyMapTileProviders.darkMatterSubdomains,
-              userAgentPackageName: 'com.example.spidey_tracker',
-              maxZoom: 19,
-            ),
+            // Dark base canvas background
+            Container(color: const Color(0xFF0F172A)),
 
-            // User GPS Location Pulse Marker Layer
-            if (state.userLocation != null)
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: state.userLocation!,
-                    width: 32,
-                    height: 32,
-                    child: _UserGpsMarkerWidget(),
-                  ),
-                ],
-              ),
-
-            // Animated Marker Clustering Layer for Hundreds of Sightings
-            MarkerClusterLayerWidget(
-              options: MarkerClusterLayerOptions(
-                maxClusterRadius: 50,
-                size: const Size(54, 54),
-                markers: markers,
-                builder: (context, clusterMarkers) {
-                  return _ClusterMarkerWidget(count: clusterMarkers.length);
+            FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: const LatLng(40.7350, -73.9400), // Queens / NYC Core
+                initialZoom: 12.8,
+                minZoom: 2.0,
+                maxZoom: 18.5,
+                onMapReady: () {
+                  cubit.setMapController(_mapController);
+                },
+                onTap: (_, _) {
+                  cubit.clearSelectedSighting();
                 },
               ),
+              children: [
+                // Official Public OpenStreetMap Tile Layer
+                TileLayer(
+                  urlTemplate: SpideyMapTileProviders.openStreetMapUrl,
+                  userAgentPackageName: 'com.example.spidey_tracker',
+                  maxZoom: 19,
+                  tileBuilder: isDark
+                      ? (context, tileWidget, tile) {
+                          // Dark Retro comic radar matrix filter (Invert + Dark Hue Matrix)
+                          return ColorFiltered(
+                            colorFilter: const ColorFilter.matrix(<double>[
+                              -0.7, 0, 0, 0, 235, // Red
+                              0, -0.7, 0, 0, 240, // Green
+                              0, 0, -0.6, 0, 255, // Blue
+                              0, 0, 0, 1.0, 0,    // Alpha
+                            ]),
+                            child: tileWidget,
+                          );
+                        }
+                      : null,
+                ),
+
+                // User GPS Location Pulse Marker Layer
+                if (state.userLocation != null)
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        point: state.userLocation!,
+                        width: 32,
+                        height: 32,
+                        child: _UserGpsMarkerWidget(),
+                      ),
+                    ],
+                  ),
+
+                // Animated Marker Clustering Layer for Hundreds of Sightings
+                MarkerClusterLayerWidget(
+                  options: MarkerClusterLayerOptions(
+                    maxClusterRadius: 50,
+                    size: const Size(54, 54),
+                    markers: markers,
+                    builder: (context, clusterMarkers) {
+                      return _ClusterMarkerWidget(count: clusterMarkers.length);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         );

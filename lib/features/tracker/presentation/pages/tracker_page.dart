@@ -7,7 +7,6 @@ import '../widgets/crime_alert_list.dart';
 import '../widgets/patrol_status_card.dart';
 import '../widgets/radar_scanner_widget.dart';
 import '../widgets/tracker_app_bar.dart';
-import '../widgets/web_fluid_gauge.dart';
 
 class TrackerPage extends StatelessWidget {
   const TrackerPage({super.key});
@@ -40,8 +39,6 @@ class TrackerView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: const [
               PatrolStatusCard(),
-              SizedBox(height: AppDimensions.p16),
-              WebFluidGauge(),
               SizedBox(height: AppDimensions.p16),
               RadarScannerWidget(),
               SizedBox(height: AppDimensions.p16),
