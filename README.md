@@ -2,7 +2,7 @@
   <img src="assets/images/spidey_app_icon.png" alt="Spidey Tracker Icon" width="120" />
 </p>
 
-<h1 align="center">🕷️ Spidey Tracker</h1>
+<h1 align="center">Spidey Tracker</h1>
 
 <p align="center">
   <b>A Spider-Man: Brand New Day & Insomniac FNSM-inspired Dispatch & Crime Radar Flutter App.</b>
@@ -18,7 +18,7 @@
 
 ---
 
-## 🌟 Overview
+## Overview
 
 **Spidey Tracker** is a Flutter application designed with the retro-comic aesthetic of *Spider-Man: Brand New Day* combined with the interactive crime radar and dispatch telemetry of the **Friendly Neighborhood Spider-Man (FNSM)** in-game app from Insomniac's *Spider-Man* series.
 
@@ -26,7 +26,7 @@ The app tracks real-time Spider-Man sightings, active city crimes, villain encou
 
 ---
 
-## 📱 Screenshots
+## Screenshots
 
 <p align="center">
   <img src="assets/screenshots/splash.png" width="19%" alt="Splash Screen" />
@@ -42,27 +42,27 @@ The app tracks real-time Spider-Man sightings, active city crimes, villain encou
 
 ---
 
-## 🚀 Features
+## Features
 
-- 🗺️ **Interactive OpenStreetMap Spider-Radar**: Full-screen radar map powered by `flutter_map` with dynamic Dark/Light retro matrix styling.
-- 📍 **Custom Spidey Markers & Clustering**:
+- **Interactive OpenStreetMap Spider-Radar**: Full-screen radar map powered by `flutter_map` with dynamic Dark/Light retro matrix styling.
+- **Custom Spidey Markers & Clustering**:
   - Pixel Spidey mask pins with cream backing and comic borders.
-  - Dynamic marker clustering that groups hundreds of sightings into glowing count badges when zoomed out.
-- 🎬 **Automatic Cinematic Dive**:
+  - Dynamic marker clustering that groups hundreds of sightings into count badges when zoomed out.
+- **Automatic Cinematic Dive**:
   - Smooth multi-stage camera sweep zooming from world orbit down into NYC street level (`World` $\rightarrow$ `Country` $\rightarrow$ `District` $\rightarrow$ `Street`).
-- 📡 **Live User Location**: Instant GPS acquisition to lock and fly the radar to your coordinates.
-- 🚨 **Crime & Dispatch Telemetry**:
-  - Real-time district alerts (robberies, villain flare-ups, cat rescues).
-  - One-tap dispatch & alert resolution.
-- 🎨 **Comic Retro Design System**:
+- **Live User Location**: Instant GPS acquisition to lock and center the radar on user coordinates.
+- **Crime & Dispatch Telemetry**:
+  - Real-time district alerts (robberies, villain encounters, cat rescues).
+  - One-tap dispatch and alert resolution.
+- **Comic Retro Design System**:
   - Sky Blue (`#54CCFD`), Spidey Red (`#EF4444`), Badge Cream (`#FEE6A9`), and Dark Ink (`#0B1120`).
   - Pixel border cards, custom badges, and comic typography.
-- 🌓 **Dynamic Theme Switching**: Light & Dark mode support persisted locally via `shared_preferences`.
-- ⚡ **Preloaded State**: Seamless screen transitions with zero latency using background Cubit preloading during splash.
+- **Dynamic Theme Switching**: Light and Dark mode support persisted locally via `shared_preferences`.
+- **Preloaded State**: Seamless screen transitions with zero latency using background Cubit preloading during splash.
 
 ---
 
-## 🏗️ Architecture & Code Quality
+## Architecture & Code Quality
 
 The project strictly follows **Clean Architecture**, **SOLID Principles**, and the **BLoC / Cubit** state management pattern:
 
@@ -89,7 +89,7 @@ lib/
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## Tech Stack & Dependencies
 
 - **Framework**: [Flutter](https://flutter.dev) (Dart SDK 3.x)
 - **State Management**: [flutter_bloc](https://pub.dev/packages/flutter_bloc) & [equatable](https://pub.dev/packages/equatable)
@@ -101,7 +101,7 @@ lib/
 
 ---
 
-## ⚡ Getting Started
+## Getting Started
 
 ### Prerequisites
 - Flutter SDK installed (`>=3.6.0`)
@@ -132,7 +132,7 @@ lib/
 
 ---
 
-## 🧪 Testing
+## Testing
 
 Run code analysis and all test suites:
 
@@ -143,6 +143,6 @@ flutter test
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
