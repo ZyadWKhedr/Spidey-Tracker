@@ -10,14 +10,14 @@ import '../../domain/entities/spidey_sighting.dart';
 import '../cubit/radar_map_cubit.dart';
 import '../cubit/radar_map_state.dart';
 
-class RadarGoogleMapView extends StatefulWidget {
-  const RadarGoogleMapView({super.key});
+class RadarMapView extends StatefulWidget {
+  const RadarMapView({super.key});
 
   @override
-  State<RadarGoogleMapView> createState() => _RadarGoogleMapViewState();
+  State<RadarMapView> createState() => _RadarMapViewState();
 }
 
-class _RadarGoogleMapViewState extends State<RadarGoogleMapView> {
+class _RadarMapViewState extends State<RadarMapView> {
   late final MapController _mapController;
 
   @override

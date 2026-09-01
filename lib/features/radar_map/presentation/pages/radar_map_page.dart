@@ -4,8 +4,8 @@ import '../../../../core/constants/app_dimensions.dart';
 import '../cubit/radar_map_cubit.dart';
 import '../cubit/radar_map_state.dart';
 import '../widgets/cinematic_camera_controls.dart';
-import '../widgets/radar_google_map_view.dart';
 import '../widgets/radar_map_header.dart';
+import '../widgets/radar_map_view.dart';
 import '../widgets/sighting_bottom_sheet.dart';
 import '../widgets/user_location_button.dart';
 
@@ -20,9 +20,9 @@ class RadarMapPage extends StatelessWidget {
           return Stack(
             children: [
               // 1. Full-screen OpenStreetMap Radar View with Dark Theme
-              const RadarGoogleMapView(),
+              const RadarMapView(),
 
-              // 2. Top Header HUD with Back Button & Count (No overflow)
+              // 2. Top Header HUD with Back Button & Count
               Positioned(
                 top: 0,
                 left: 0,
