@@ -26,6 +26,22 @@ The app tracks real-time Spider-Man sightings, active city crimes, villain encou
 
 ---
 
+## 📱 Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/splash.png" width="19%" alt="Splash Screen" />
+  <img src="assets/screenshots/home_tracker.png" width="19%" alt="Home Dispatch" />
+  <img src="assets/screenshots/crime_alerts.png" width="19%" alt="Crime Alert Feed" />
+  <img src="assets/screenshots/radar_clusters.png" width="19%" alt="Radar Clusters" />
+  <img src="assets/screenshots/radar_sighting.png" width="19%" alt="Sighting Details" />
+</p>
+
+| Splash Screen | Home Dispatch Tracker | Live Crime Alerts | Clustered Radar Map | Sighting Details |
+|:---:|:---:|:---:|:---:|:---:|
+| Comic Retro Intro | Patrol Status & Radar | Critical Dispatches | 100+ Clustered Pins | Verified Encounter Card |
+
+---
+
 ## 🚀 Features
 
 - 🗺️ **Interactive OpenStreetMap Spider-Radar**: Full-screen radar map powered by `flutter_map` with dynamic Dark/Light retro matrix styling.
@@ -70,14 +86,6 @@ lib/
         ├── data/                  # Models & Data sources (100+ NYC/global sightings)
         └── presentation/          # RadarMapCubit, RadarMapView, Header & Sheets
 ```
-
----
-
-## 📱 Screenshots
-
-| Splash Screen | Home Dispatch Tracker | Global Spider-Radar Map |
-|:---:|:---:|:---:|
-| Centered App Icon & Progress | Patrol Status & Crime List | Clustered OpenStreetMap HUD |
 
 ---
 
