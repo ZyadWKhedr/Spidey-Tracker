@@ -1,10 +1,10 @@
 abstract final class SpideyMapTileProviders {
-  // Dark CartoDB Matter (Retro Dark Comic Spider-Man Radar Style)
+  // Stadia Maps / Alidade Smooth Dark (Free OSM Dark Basemap)
   static const String darkMatterUrl =
-      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-  static const List<String> darkMatterSubdomains = ['a', 'b', 'c', 'd'];
+      'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
+  static const List<String> darkMatterSubdomains = [];
 
-  // Standard OpenStreetMap Fallback
+  // OpenStreetMap standard tile server
   static const String openStreetMapUrl =
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 }

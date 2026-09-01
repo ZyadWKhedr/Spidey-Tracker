@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../data/repositories/radar_map_repository_impl.dart';
 import '../cubit/radar_map_cubit.dart';
+import '../cubit/radar_map_state.dart';
 import '../widgets/cinematic_camera_controls.dart';
 import '../widgets/radar_google_map_view.dart';
 import '../widgets/radar_map_header.dart';
@@ -29,36 +30,40 @@ class RadarMapView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: const [
-          // 1. Full-screen OpenStreetMap Radar View with Dark Matter Styling
-          RadarGoogleMapView(),
+      body: BlocBuilder<RadarMapCubit, RadarMapState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              // 1. Full-screen OpenStreetMap Radar View with Dark Theme
+              const RadarGoogleMapView(),
 
-          // 2. Top Header HUD with Back Button & Count
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: RadarMapHeader(),
-          ),
+              // 2. Top Header HUD with Back Button & Count (No overflow)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: RadarMapHeader(sightingsCount: state.sightings.length),
+              ),
 
-          // 3. Camera Level Controls (Street -> District -> Country -> World)
-          Positioned(
-            top: 80,
-            right: AppDimensions.p16,
-            child: CinematicCameraControls(),
-          ),
+              // 3. Camera Level Controls positioned safely below the header
+              const Positioned(
+                top: 100,
+                right: AppDimensions.p12,
+                child: CinematicCameraControls(),
+              ),
 
-          // 4. User GPS Location Target Button
-          Positioned(
-            bottom: 120,
-            right: AppDimensions.p16,
-            child: UserLocationButton(),
-          ),
+              // 4. User GPS Location Target Button
+              const Positioned(
+                bottom: 110,
+                right: AppDimensions.p16,
+                child: UserLocationButton(),
+              ),
 
-          // 5. Selected Sighting Popup Sheet
-          SightingBottomSheet(),
-        ],
+              // 5. Selected Sighting Popup Sheet
+              const SightingBottomSheet(),
+            ],
+          );
+        },
       ),
     );
   }
