@@ -6,6 +6,8 @@ import '../core/services/theme_storage_service.dart';
 import '../core/theme/app_theme.dart';
 import '../core/theme/cubit/theme_cubit.dart';
 import '../core/theme/cubit/theme_state.dart';
+import '../features/radar_map/data/repositories/radar_map_repository_impl.dart';
+import '../features/radar_map/presentation/cubit/radar_map_cubit.dart';
 
 class SpideyTrackerApp extends StatelessWidget {
   final ThemeStorageService? themeStorageService;
@@ -19,11 +21,20 @@ class SpideyTrackerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ThemeCubit(
-        storageService: themeStorageService,
-        initialMode: initialThemeMode,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ThemeCubit(
+            storageService: themeStorageService,
+            initialMode: initialThemeMode,
+          ),
+        ),
+        BlocProvider(
+          create: (_) => RadarMapCubit(
+            repository: RadarMapRepositoryImpl(),
+          )..loadInitialData(),
+        ),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {
           return MaterialApp(
