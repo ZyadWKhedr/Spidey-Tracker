@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/routes/app_router.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/pixel_border_card.dart';
 import '../cubit/tracker_cubit.dart';
@@ -52,49 +53,86 @@ class RadarScannerWidget extends StatelessWidget {
               ),
               const SizedBox(height: AppDimensions.p16),
 
-              // Scan Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: state.isScanning
-                      ? null
-                      : () => context.read<TrackerCubit>().scanRadar(),
-                  icon: state.isScanning
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation(
-                              AppColors.pixelBlack,
-                            ),
-                          ),
-                        )
-                      : const Icon(Icons.radar, size: 18),
-                  label: Text(
-                    state.isScanning ? 'SCANNING SECTOR...' : AppStrings.pingRadar,
-                    style: AppTextStyles.headlineSmall(context).copyWith(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.pixelBlack,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primarySkyBlue,
-                    foregroundColor: AppColors.pixelBlack,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
-                      side: const BorderSide(
-                        color: AppColors.pixelBlack,
-                        width: 2,
+              // Action Buttons: Scan Sector & Open Full Map
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: OutlinedButton.icon(
+                      onPressed: state.isScanning
+                          ? null
+                          : () => context.read<TrackerCubit>().scanRadar(),
+                      icon: state.isScanning
+                          ? const SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation(
+                                  AppColors.pixelBlack,
+                                ),
+                              ),
+                            )
+                          : const Icon(Icons.refresh, size: 16),
+                      label: Text(
+                        state.isScanning ? 'SCANNING' : 'PING',
+                        style: AppTextStyles.headlineSmall(context).copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.pixelBlack,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.pixelBlack,
+                        side: const BorderSide(
+                          color: AppColors.pixelBlack,
+                          width: 1.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(AppDimensions.radiusSm),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppDimensions.p12,
+                        ),
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppDimensions.p12,
+                  ),
+                  const SizedBox(width: AppDimensions.p8),
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(AppRoutes.radarMap);
+                      },
+                      icon: const Icon(Icons.map_outlined, size: 18),
+                      label: Text(
+                        'OPEN SPIDEY MAP',
+                        style: AppTextStyles.headlineSmall(context).copyWith(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.pixelBlack,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primarySkyBlue,
+                        foregroundColor: AppColors.pixelBlack,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(AppDimensions.radiusSm),
+                          side: const BorderSide(
+                            color: AppColors.pixelBlack,
+                            width: 2,
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppDimensions.p12,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
