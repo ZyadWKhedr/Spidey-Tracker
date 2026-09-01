@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../data/repositories/radar_map_repository_impl.dart';
 import '../cubit/radar_map_cubit.dart';
@@ -14,10 +15,13 @@ class RadarMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mapController = MapController();
     return BlocProvider(
       create: (context) => RadarMapCubit(
         repository: RadarMapRepositoryImpl(),
-      )..loadInitialData(),
+      )
+        ..setMapController(mapController)
+        ..loadInitialData(),
       child: const RadarMapView(),
     );
   }
@@ -31,7 +35,7 @@ class RadarMapView extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: const [
-          // 1. Full-screen Google Map with Dark Retro Spider-Man styling
+          // 1. Full-screen OpenStreetMap Radar View with Dark Matter Styling
           RadarGoogleMapView(),
 
           // 2. Top Header HUD with Back Button & Count

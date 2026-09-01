@@ -1,13 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import '../../domain/entities/spidey_sighting.dart';
 
 enum CameraLevel { street, district, country, world }
 
 final class RadarMapState extends Equatable {
   final List<SpideySighting> sightings;
-  final Set<Marker> markers;
-  final Set<ClusterManager> clusterManagers;
   final LatLng? userLocation;
   final SpideySighting? selectedSighting;
   final bool isLoadingLocation;
@@ -17,8 +15,6 @@ final class RadarMapState extends Equatable {
 
   const RadarMapState({
     this.sightings = const [],
-    this.markers = const {},
-    this.clusterManagers = const {},
     this.userLocation,
     this.selectedSighting,
     this.isLoadingLocation = false,
@@ -29,8 +25,6 @@ final class RadarMapState extends Equatable {
 
   RadarMapState copyWith({
     List<SpideySighting>? sightings,
-    Set<Marker>? markers,
-    Set<ClusterManager>? clusterManagers,
     LatLng? userLocation,
     SpideySighting? selectedSighting,
     bool clearSelectedSighting = false,
@@ -41,8 +35,6 @@ final class RadarMapState extends Equatable {
   }) {
     return RadarMapState(
       sightings: sightings ?? this.sightings,
-      markers: markers ?? this.markers,
-      clusterManagers: clusterManagers ?? this.clusterManagers,
       userLocation: userLocation ?? this.userLocation,
       selectedSighting: clearSelectedSighting
           ? null
@@ -57,8 +49,6 @@ final class RadarMapState extends Equatable {
   @override
   List<Object?> get props => [
         sightings,
-        markers,
-        clusterManagers,
         userLocation,
         selectedSighting,
         isLoadingLocation,

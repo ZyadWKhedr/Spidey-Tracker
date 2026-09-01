@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import '../../domain/entities/spidey_sighting.dart';
 import '../../domain/repositories/radar_map_repository.dart';
 import '../models/spidey_sighting_model.dart';

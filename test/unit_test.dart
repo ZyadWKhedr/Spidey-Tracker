@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spidey_tracker/core/services/theme_storage_service.dart';
 import 'package:spidey_tracker/core/theme/cubit/theme_cubit.dart';
